@@ -15,6 +15,8 @@ time.sleep(1)
 
 user = os.getenv('USER', "manjaro")
 
+mozillaDir = "/home/"+user+"/.mozilla"
+
 firefoxDir = "/home/"+user+"/.mozilla/firefox/" # ~/.mozilla/firefox
 
 systemMozIni = firefoxDir+"installs.ini"
@@ -43,7 +45,7 @@ def copyPersisted():
     shutil.copytree(mountFolder, mozPersistedFolderName, ignore_dangling_symlinks=True, dirs_exist_ok=True)
     shutil.copy(persistedMozIni, firefoxDir)
     shutil.copy(persistedMozProfilesIni, firefoxDir)
-    for src in [systemMozIni, systemMozProfilesIni, mozPersistedFolderName, firefoxDir]:
+    for src in [mozillaDir]:
         shutil.chown(src, user=user, group=user)
         if os.path.isdir(src): # os.walk only for dirs
             for dirpath, dirnames, filenames in os.walk(src):
@@ -79,4 +81,3 @@ elif(argv1=="end"):
 else:
     print("Use 'start' to sync")
     print("Use 'end' to persist")
-
